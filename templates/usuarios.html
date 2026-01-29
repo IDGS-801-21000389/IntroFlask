@@ -1,5 +1,35 @@
- {% extends "layout.html"%}
+{% extends "layout.html" %}
+{% block content %}
 
-   {%block content%}
-    <h1>Usuarios</h1>
-{%endblock%}
+{%import "_macros.html" as macros %}
+
+<form action="/usuarios" method="post" novalidate>
+
+{{form.csrf_token}}
+<input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+    <div class="mb-3">
+        {{macros.campoNuevo(form.matricula, class="form-control")}}
+    </div>
+    <div class="mb-3">
+        {{macros.campoNuevo(form.nombre, class="form-control")}}
+    </div>
+    <div class="mb-3">
+        {{macros.campoNuevo(form.apaterno, class="form-control")}}
+    </div>
+    <div class="mb-3">
+        {{macros.campoNuevo(form.amaterno, class="form-control")}}
+    </div>
+    <div class="mb-3">
+        {{macros.campoNuevo(form.correo, class="form-control")}}
+    </div>
+    <button class="btn btn-primary" value="Calcular">Registrar</button>
+</form>
+
+<h1>Matricula: {{mat}}</h1>
+<h1>Nombre: {{nom}}</h1>
+<h1>Apellido Paterno: {{apa}}</h1>
+<h1>Apellido Materno: {{ama}}</h1>
+<h1>Correo: {{email}}</h1>
+
+{% endblock%}
