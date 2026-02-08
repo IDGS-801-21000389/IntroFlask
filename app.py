@@ -95,6 +95,47 @@ def operas():
 </form>
 '''
 
+@app.route('/cinepolis')#decorador o ruta de la aplicacion
+def cinepolis():
+    return render_template('cinepolis.html')
+
+@app.route('/entradas', methods=['GET', 'POST'])
+def pagar():
+    resultado = ""  
+
+    if request.method == 'POST':
+        try:
+            nombre = request.form['nombre']
+            cantidad_compradores = int(request.form['compradores'])  
+            cineco = int(request.form['cineco'])
+            boletos = int(request.form['boletos'])  
+            
+            boletos_permitidos = (cantidad_compradores + 1) * 7  
+
+            if boletos > boletos_permitidos:
+                resultado = f"Solo se permiten comprar 7 boletos por persona"
+            else:
+                precioBoleto = 12.00
+                total = boletos * precioBoleto
+
+                if boletos > 5:
+                    descuento = 0.15
+                elif 3 <= boletos <= 5:
+                    descuento = 0.10
+                else:
+                    descuento = 0.0
+
+                totalDescuento = total * (1 - descuento)
+
+                if cineco == 1:
+                    totalDescuento *= 0.9  
+
+                resultado = f"${totalDescuento:,.2f}"  
+        except ValueError:
+            resultado = "Error en los datos ingresados, por favor verifica los campos."
+
+    return render_template('cinepolis.html', resultado=resultado)
+
 if __name__ == "__main__":
     csrf.init_app(app)
     app.run(debug=True)
